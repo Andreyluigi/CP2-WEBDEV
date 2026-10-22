@@ -3,6 +3,9 @@ import { formatarPreco } from '../utils/formatarPreco'
 
 export default function ProdutoCard({ produto, onAdicionar }) {
   const esgotado = produto.estoque === 0
+  const precoValido = Number.isFinite(Number(produto.price))
+  const precoOriginalValido = Number.isFinite(Number(produto.precoOriginal))
+  const precoExibido = precoValido ? Number(produto.price) : precoOriginalValido ? Number(produto.precoOriginal) : null
 
   return (
     <article className="card">
@@ -18,19 +21,23 @@ export default function ProdutoCard({ produto, onAdicionar }) {
       </p>
 
       <div className="card-precos">
-        {produto.precoOriginal && (
+        {precoOriginalValido && (
           <span className="preco-original">{formatarPreco(produto.precoOriginal)}</span>
         )}
-        <span className="preco">{formatarPreco(produto.price)}</span>
+        <span className="preco">
+          {precoExibido !== null ? formatarPreco(precoExibido) : 'Preço indisponível'}
+        </span>
       </div>
 
       <div className="card-selos">
-        {produto.price > 100 && <span className="selo selo-frete">Frete grátis</span>}
+        {precoExibido !== null && Number(precoExibido) > 100 && (
+          <span className="selo selo-frete">Frete grátis</span>
+        )}
         {esgotado && <span className="selo selo-esgotado">Esgotado</span>}
       </div>
 
-      <button className="botao" onClick={() => onAdicionar(produto)} disabled={esgotado}>
-        Adicionar ao carrinho
+      <button className="botao" onClick={() => onAdicionar(produto)} disabled={esgotado || precoExibido === null}>
+        {precoExibido === null ? 'Indisponível' : 'Adicionar ao carrinho'}
       </button>
     </article>
   )
