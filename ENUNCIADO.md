@@ -12,7 +12,7 @@ Você assumiu a manutenção da TechStore, uma loja virtual em React que já est
 * Entregue o link do repositório e do projeto publicado na Vercel na tarefa do Teams.
 * Sua entrega será verificada a partir de um clone novo do repositório, seguindo as instruções do README.
 
----
+--- 
 
 ## Obrigatório 1: Total do carrinho
 
